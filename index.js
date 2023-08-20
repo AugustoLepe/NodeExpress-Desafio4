@@ -30,17 +30,27 @@ app.post("/posts", async (req, res) => {
 
 
 app.put("/posts/like/:id", async (req, res) => {
-    const { id } = req.params
     try {
+        const { id } = req.params
         await like(id)
         res.send("Like agregado con éxito")
-    } catch ({ code, message }) {
-        res.status(code).send(message)
+
+    } catch (error) {
+        res.status(400).send(error)
+        console.log("error:", error.where)
+        console.log("código:", error.code)
     }
 })
 
 app.delete("/posts/:id", async (req, res) => {
-    const { id } = req.params
-    await eliminarPost(id)
-    res.send("Post eliminado con éxito")
+    try {
+        const { id } = req.params
+        await eliminarPost(id)
+        res.send("Post eliminado con éxito")
+
+    } catch (error) {
+        res.status(500).send(error)
+        console.log("error:", error.where)
+        console.log("código:", error.code)
+    }
 })
